@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class perfil(models.Model):
+class Perfil(models.Model):
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='media\profilePics', blank=True, null=True)
     bio = models.TextField(max_length=500, blank=True)
     ROLES = (
@@ -11,5 +11,9 @@ class perfil(models.Model):
             ('user', 'Usuario'))
     
     rol = models.CharField(max_length=10, choices=ROLES, default='user')
+    
+    def __str__(self):
+            return self.usuario.username
+    
     
     

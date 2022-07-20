@@ -3,8 +3,12 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 
-from ProyectoFinalApp.forms import UserRegisterForm
-from ProyectoFinalApp.models import perfil
+from ProyectoFinalApp.forms import *
+from ProyectoFinalApp.models import Perfil
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 def inicio(request):
     return render(request, 'ProyectoFinalApp\inicio.html', {})
@@ -37,18 +41,52 @@ def login_request(request):
     
 
 def registro(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            form.save()
-            return render(request, 'ProyectoFinalApp\inicio.html', {'mensaje':'Usuario creado'}) 
-    else:
-        form = UserRegisterForm()
-        
     
+    if request.method == 'POST':
+        
+        form = UserRegisterForm(request.POST)
+        
+        if form.is_valid():
+            
+            informacion = form.cleaned_data
+            username = informacion.get('username')
+            password = informacion.get('password1')
+            
+            form.save()
+            
+            user_auth = authenticate(username=username, password=password)
+            
+            if username is not None:
+                login(request, username)
+                return redirect('inicio')
+            else:
+                return redirect('login')
+            
+        return render(request, r'ProyectoFinalApp\registro.html', {'form':form})
+    
+    form = UserRegisterForm()
+
     return render(request, r'ProyectoFinalApp\registro.html', {'form':form})
 
 def logout_request(request):
     logout(request)
     return redirect('inicio')
+
+@login_required
+def editarPerfil(request):
+    
+    user = request.user
+    
+    if request.method == 'POST':
+        form = UserEditForm(request.POST)
+        if form.is_valid():
+            informacion = form.cleaned_data
+            user.email = informacion['email']
+            user.save()
+            return redirect('inicio')
+        else:
+            form = UserEditForm(initial={"email":user.email})
+        
+        return render(request, 'ProyectoFinalApp\editar-perfil.html')
+
+
