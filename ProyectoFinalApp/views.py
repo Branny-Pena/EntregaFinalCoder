@@ -2,13 +2,13 @@ import django
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 
+from .models import *
 from ProyectoFinalApp.forms import *
-from ProyectoFinalApp.models import Perfil
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 
 def inicio(request):
     return render(request, 'ProyectoFinalApp\inicio.html', {})
@@ -54,10 +54,10 @@ def registro(request):
             
             form.save()
             
-            user_auth = authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password)
             
-            if username is not None:
-                login(request, username)
+            if user is not None:
+                login(request, user)
                 return redirect('inicio')
             else:
                 return redirect('login')
@@ -88,5 +88,37 @@ def editarPerfil(request):
             form = UserEditForm(initial={"email":user.email})
         
         return render(request, 'ProyectoFinalApp\editar-perfil.html')
+    
+@login_required
+def aregarAvatar(request):
+    
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = User.objects.get(username=request.user.username)
+            avatar = Avatar(usuario=user, bio=form.cleaned_data['bio'], imagen=form.cleaned_data['imagen'])
+            avatar.save()
+            return redirect('inicio')
+    else:
+        form = AvatarForm()
+        
+    return render(request, r'ProyectoFinalApp\agregar-avatar.html', {'form':form})
 
-
+@login_required
+def enviarMensaje(request):
+    if request.methos == 'POST':
+        form = CrearMensajeForm(request.POST)
+        if form.is_valid():
+            informacion = form.cleaned_data
+            mensaje = Mensaje(origen=request.user, destinatario=User.objects.get(email=informacion["destinatario"]), 
+                              mensaje = informacion["mensaje"])
+            mensaje.save()
+            messages.success(request, "Mensaje enviado!")
+            return redirect('inicio')
+        else:
+            messages.success(request, "Mensaje no enviado, error")
+            return redirect('inicio')
+    else:
+        form = CrearMensajeForm()
+        return render(request, r'ProyectoFinalApp\enviar-mensaje.html', {'form':form})
+        
