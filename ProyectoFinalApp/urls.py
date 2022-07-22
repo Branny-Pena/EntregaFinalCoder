@@ -9,4 +9,5 @@ urlpatterns = [
     path('editar-perfil', editarPerfil, name='editar perfil'),
     path('agregar-avatar', aregarAvatar, name='agregar avatar'),
     path('enviar-mensaje', enviarMensaje, name='enviar mensaje'),
+    path('bandeja-entrada', bandejaEntrada, name='bandeja de entrada'),
 ]

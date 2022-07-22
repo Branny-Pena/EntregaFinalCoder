@@ -121,4 +121,10 @@ def enviarMensaje(request):
     else:
         form = CrearMensajeForm()
         return render(request, r'ProyectoFinalApp\enviar-mensaje.html', {'form':form})
+    
+@login_required
+def bandejaEntrada(request):
+    user = request.user
+    mensajes = Mensaje.objects.filter(destinatario=user)
+    return render(request, r'ProyectoFinalApp\bandeja-entrada.html', {})
         
