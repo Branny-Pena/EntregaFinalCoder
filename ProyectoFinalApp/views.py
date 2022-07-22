@@ -126,5 +126,11 @@ def enviarMensaje(request):
 def bandejaEntrada(request):
     user = request.user
     mensajes = Mensaje.objects.filter(destinatario=user)
+    #falta pasar el contexto al template
+    #
+    #
+    ##
+    #
+    ##
     return render(request, r'ProyectoFinalApp\bandeja-entrada.html', {})
         
