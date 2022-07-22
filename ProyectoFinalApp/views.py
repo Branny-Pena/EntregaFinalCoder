@@ -106,7 +106,7 @@ def aregarAvatar(request):
 
 @login_required
 def enviarMensaje(request):
-    if request.methos == 'POST':
+    if request.method == 'POST':
         form = CrearMensajeForm(request.POST)
         if form.is_valid():
             informacion = form.cleaned_data
