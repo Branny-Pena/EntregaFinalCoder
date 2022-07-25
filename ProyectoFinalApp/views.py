@@ -128,7 +128,7 @@ def bandejaEntrada(request):
     mensajes = Mensaje.objects.filter(destinatario=user)
     
     
-    return render(request, r'ProyectoFinalApp\bandeja-entrada.html', {})
+    return render(request, r'ProyectoFinalApp\bandeja-entrada.html', {'mensajes':mensajes})
         
 
 @login_required
@@ -154,3 +154,33 @@ def crear_post(request):
 def todos_posts(request):
     post = Post.objects.all()
     return render(request, r'ProyectoFinalApp\listado-posts.html', {'posts':post})
+
+@login_required
+def perfil(request):
+    return render(request, r'ProyectoFinalApp\perfil.html', {})
+
+@login_required
+def avatar(request):
+    return render(request, r'ProyectoFinalApp\avatar.html', {})
+
+@login_required
+def editar_avatar(request):
+    '''user = request.user
+    
+    avt = Avatar.objects.filter(usuario=user)
+
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            info = form.cleaned_data
+            avt.bio = info['bio']
+            avt.imagen = info['imagen']
+            avt.save()
+            return redirect('inicio')
+    form = AvatarForm(initial={'bio':avt.bio, 'imagen':avt.imagen})
+    return render(request, r'ProyectoFinalApp\agregar-avatar.html', {'form':form})'''
+    return render(request, r'ProyectoFinalApp\editar-avatar.html', {})
+
+@login_required
+def eliminar_avatar(request):
+    return render(request, r'ProyectoFinalApp\eliminar-avatar.html', {})

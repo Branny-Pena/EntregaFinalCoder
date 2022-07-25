@@ -43,3 +43,4 @@ class PostForm(forms.Form):
     class Meta:
         model=Post
         fields=['titulo', 'descripcion', 'imagen', 'contenido']
+        
