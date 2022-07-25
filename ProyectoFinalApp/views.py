@@ -1,4 +1,3 @@
-import django
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -11,10 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 def inicio(request):
-    return render(request, 'ProyectoFinalApp\inicio.html', {})
+    return render(request, r'ProyectoFinalApp\inicio.html', {})
 
-def informacion(request):
-    return render(request, 'ProyectoFinalApp\informacion.html', {})
+def about(request):
+    return render(request, r'ProyectoFinalApp\about.html', {})
 
 def login_request(request):
     if request.method == 'POST':
@@ -81,13 +80,14 @@ def editarPerfil(request):
         form = UserEditForm(request.POST)
         if form.is_valid():
             informacion = form.cleaned_data
+            user.username = informacion['username']
             user.email = informacion['email']
             user.save()
             return redirect('inicio')
-        else:
-            form = UserEditForm(initial={"email":user.email})
-        
-        return render(request, 'ProyectoFinalApp\editar-perfil.html')
+    else:
+        form = UserEditForm(initial={"email":user.email, "username":user.username})
+    
+    return render(request, r'ProyectoFinalApp\editar-perfil.html', {'form':form})
     
 @login_required
 def aregarAvatar(request):
@@ -126,11 +126,24 @@ def enviarMensaje(request):
 def bandejaEntrada(request):
     user = request.user
     mensajes = Mensaje.objects.filter(destinatario=user)
-    #falta pasar el contexto al template
-    #
-    #
-    ##
-    #
-    ##
+    
+    
     return render(request, r'ProyectoFinalApp\bandeja-entrada.html', {})
         
+
+@login_required
+def crear_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            user = request.user.username
+            info = form.cleaned_data
+            post = Post(autor=user, titulo=info['titulo'], descripcion=info['descripcion'], 
+                        imagen=info['imagen'], contenido=info['contenido'])
+            
+            post.save()
+
+            return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
+            
+    form = UserRegisterForm()
+    return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
