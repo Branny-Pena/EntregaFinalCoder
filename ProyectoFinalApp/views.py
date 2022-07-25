@@ -145,7 +145,7 @@ def crear_post(request):
 
             return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
             
-    form = UserRegisterForm()
+    form = PostForm()
     return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
 
 def todosPosts(request):
