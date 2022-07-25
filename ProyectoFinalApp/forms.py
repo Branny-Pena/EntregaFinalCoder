@@ -37,7 +37,7 @@ class CrearMensajeForm(forms.Form):
 class PostForm(forms.Form):
     titulo = forms.CharField(label='Titulo', required=True)
     descripcion = forms.CharField(label='Descripcion', required=True)
-    imagen = forms.ImageField(label='Imagen', required=True)
+    imagen = forms.ImageField(label='Imagen', required=False)
     contenido = forms.CharField(label='Contenido', widget=forms.Textarea, required=True)
     
     class Meta:

@@ -28,6 +28,7 @@
                             {% endif %}
                             <!-- <i class="bi bi-person-circle text-light"></i> -->
                             <li class="nav-item"><p class="text-light my-2 mx-2"> Hola, <b>{{user.username}}</b>!</p></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'crear post' %}">Crear Post</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'editar perfil' %}">Editar Perfil</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'agregar avatar' %}">Agregar Avatar</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'enviar mensaje' %}">Enviar Mensaje</a></li>
@@ -36,6 +37,7 @@
                             <li class="nav-item"><a class="btn btn-primary mx-2" href="{% url 'login' %}">Iniciar Sesión</a></li>
                             <li class="nav-item"><a class="btn btn-outline-primary" href="{% url 'registro' %}">Registrarse</a></li>
                         {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'listado de posts' %}">Ver todos los posts</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Sobre nosotros</a></li>
                     </ul>

@@ -136,18 +136,21 @@ def crear_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            user = request.user.username
+            user = User.objects.get(username=request.user.username)
             info = form.cleaned_data
             post = Post(autor=user, titulo=info['titulo'], descripcion=info['descripcion'], 
                         imagen=info['imagen'], contenido=info['contenido'])
             
             post.save()
+            
+            return redirect('listado de posts')
 
-            return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
+        return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
             
     form = PostForm()
+    
     return render(request, r'ProyectoFinalApp\crear-post.html', {'form':form})
 
-def todosPosts(request):
-    post = Post.objects(all)
-    return render(request, r'ProyectoFinalApp\templates\ProyectoFinalApp\listado-posts.html',{'post':post})
+def todos_posts(request):
+    post = Post.objects.all()
+    return render(request, r'ProyectoFinalApp\listado-posts.html', {'posts':post})

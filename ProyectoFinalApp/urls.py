@@ -12,4 +12,5 @@ urlpatterns = [
     path('bandeja-entrada', bandejaEntrada, name='bandeja de entrada'),
     path('about', about, name='about'),
     path('crear-post', crear_post, name='crear post'),
+    path('listado-posts', todos_posts, name='listado de posts'),
 ]
