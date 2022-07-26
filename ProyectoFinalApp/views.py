@@ -165,7 +165,7 @@ def avatar(request):
 
 @login_required
 def editar_avatar(request):
-    '''user = request.user
+    user = request.user
     
     avt = Avatar.objects.filter(usuario=user)
 
@@ -178,8 +178,8 @@ def editar_avatar(request):
             avt.save()
             return redirect('inicio')
     form = AvatarForm(initial={'bio':avt.bio, 'imagen':avt.imagen})
-    return render(request, r'ProyectoFinalApp\agregar-avatar.html', {'form':form})'''
-    return render(request, r'ProyectoFinalApp\editar-avatar.html', {})
+    
+    return render(request, r'ProyectoFinalApp\editar-avatar.html', {'form':form})
 
 @login_required
 def eliminar_avatar(request):
